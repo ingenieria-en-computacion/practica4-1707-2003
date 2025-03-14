@@ -2,39 +2,46 @@
 #include <stdlib.h>
 
 int main() {
-    int m, n;
-    printf("Ingrese el número de filas: ");
-    
-    printf("Ingrese el número de columnas: ");
-    
+    int m, n, **matriz;
 
-    int *matrix = (int *)calloc(m * n, sizeof(int));
-    if (matrix == NULL) {
-        printf("Error: No se pudo asignar memoria.\n");
-        
+    printf("Ingrese el número de filas y columnas: ");
+    scanf("%d %d", &m, &n);
+
+    // Reservar memoria dinámicamente
+    matriz = (int **)calloc(m, sizeof(int *));
+    for (int i = 0; i < m; i++) {
+        matriz[i] = (int *)calloc(n, sizeof(int));
     }
 
-    printf("Matriz inicializada con ceros:\n");
+    // Modificar algunos valores de la matriz
+    int x, y, valor;
+    printf("Ingrese la posición (fila columna) y valor a modificar (-1 -1 para salir):\n");
+    while (1) {
+        scanf("%d %d", &x, &y);
+        if (x == -1 || y == -1) break;
+        printf("Ingrese el nuevo valor: ");
+        scanf("%d", &valor);
+        if (x < m && y < n) {
+            matriz[x][y] = valor;
+        } else {
+            printf("Posición fuera de rango.\n");
+        }
+    }
+
+    // Imprimir la matriz
+    printf("Matriz resultante:\n");
     for (int i = 0; i < m; i++) {
         for (int j = 0; j < n; j++) {
-            
+            printf("%d ", matriz[i][j]);
         }
         printf("\n");
     }
 
-    printf("Ingrese las coordenadas (fila, columna) y el valor para modificar (ej. 1 2 5):\n");
-    int row, col, value;
-    //lee los varlores solicitados
-    matrix[(row-1) * n + (col-1)] = value;
-
-    printf("Matriz actualizada:\n");
+    // Liberar memoria
     for (int i = 0; i < m; i++) {
-        for (int j = 0; j < n; j++) {
-            
-        }
-        printf("\n");
+        free(matriz[i]);
     }
+    free(matriz);
 
-    free(matrix);
     return 0;
 }
