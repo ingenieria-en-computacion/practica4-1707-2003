@@ -2,38 +2,40 @@
 #include <stdlib.h>
 
 int main() {
-    int size ; // Asigna un número pequeño
-    int *arr ; // reserva memoria con malloc
-    if (arr == NULL) {
-        printf("Error: No se pudo asignar memoria.\n");
+    int *lista, size = 2, count = 0, num;
+
+    lista = (int *)malloc(size * sizeof(int));
+    if (lista == NULL) {
+        printf("Error al asignar memoria.\n");
         return 1;
     }
 
-    int count = 0;
-    int num;
     printf("Ingrese números (ingrese -1 para terminar):\n");
     while (1) {
         scanf("%d", &num);
-        if (num == -1) ;//rompe el ciclo
+        if (num == -1) break;
 
-        if (count >= size) {
+        // Si el arreglo está lleno, hacerlo más grande 
+        if (count == size) {
             size *= 2;
-            arr ; //utiliza realloc para cambiar el tamaño del arreglo
-            if (arr == NULL) {
-                printf("Error: No se pudo reasignar memoria.\n");
+            lista = (int *)realloc(lista, size * sizeof(int));
+            if (lista == NULL) {
+                printf("Error al reasignar memoria.\n");
                 return 1;
             }
         }
-
-        arr[count++] = num;
+        lista[count++] = num;
     }
 
-    printf("La lista ingresada es: ");
+    // Imprimir la lista
+    printf("Lista final: ");
     for (int i = 0; i < count; i++) {
-        //Imprime la lista
+        printf("%d ", lista[i]);
     }
     printf("\n");
 
-    //libera la memoria
+    // Liberar memoria
+    free(lista);
+
     return 0;
 }
